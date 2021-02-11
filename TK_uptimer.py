@@ -12,14 +12,8 @@ client = discord.Client()
 loop = asyncio.get_event_loop()
 endtk = threading.Event()
 
-base_interval = 0
-shorter_time = 0
-dead_time = 0
+TOKEN: str = os.environ['DISCORD_BOT_TOKEN']
 
-@client.event
-async def on_ready():
-    # 起動したらターミナルにログイン通知が表示される
-    print('ログインしました')
 
 # メッセージ受信時に動作する処理
 @client.event
