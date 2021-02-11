@@ -6,7 +6,7 @@ import time
 import threading
 
 
-TOKEN = "ODA5NDQ4NjY2Mjc5NDQ0NTMx.YCVP0A.6DBxnVfW1sr6Po26gee2KAJNzX4"
+TOKEN: str = os.environ['DISCORD_BOT_TOKEN']
 
 
 if __name__ == '__main__':
