@@ -12,13 +12,22 @@ client = discord.Client()
 loop = asyncio.get_event_loop()
 endtk = threading.Event()
 
-TOKEN: str = os.environ['DISCORD_BOT_TOKEN']
+base_interval = 0
+shorter_time = 0
+dead_time = 0
+
+
+@client.event
+async def on_ready():
+    # 起動したらターミナルにログイン通知が表示される
+    print('ログインしました')
 
 
 # メッセージ受信時に動作する処理
 @client.event
 async def on_message(message):
     # メッセージ送信者がBotだった場合は無視する
+    print('メッセージ受信：', message.content)
     if message.author.bot:
         return
     elif message.content == '!isrunning':
@@ -39,13 +48,14 @@ async def on_message(message):
         th.start()
         print('スレッド開始')
     # グローバル変数で処理しないとendtkがないのでエラーになると思う
-    elif message.content == ('!endtk'):
+    elif message.content == '!endtk':
         endtk.set()
         print('スレッド終了')
-    elif message.content == ('!cleartk'):
+    elif message.content == '!cleartk':
         base_interval = 0
         shorter_time = 0
         dead_time = 0
+
 
 # カウントアップタイマー処理
 def up_timer(endtk, message):
@@ -69,8 +79,10 @@ def up_timer(endtk, message):
             print('スレッド終了')
             break
 
+
 # 実際のメッセージ送信する処理
 def _send_msg(message, text):
     asyncio.ensure_future(message.channel.send(text), loop=loop)
+
 
 client.run(TOKEN)
